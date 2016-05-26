@@ -30,6 +30,12 @@ class RedisManager(NoSqlManager):
         #XXX: beaker.container.Value.set_value calls NamespaceManager.set_value
         # however it(until version 1.6.3) never sets expiretime param. Why?
 
+        if (expiretime is None) and (type(value) is tuple):
+            try:
+                if isinstance(value[1], int) and value[1] > 0:
+                    expiretime = value[1]
+            except:
+                expiretime = 86400
         if expiretime:
             self.db_conn.setex(key, expiretime, pickle.dumps(value))
         else:
