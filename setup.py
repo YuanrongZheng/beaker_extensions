@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.2.0.post2'
+version = '0.2.0.post3'
 
 tests_require = ['nose', 'webtest']
 

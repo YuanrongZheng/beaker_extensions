@@ -24,7 +24,7 @@ class RedisManager(NoSqlManager):
         log.debug('%s contained in redis cache (as %s) : %s'%(key, self._format_key(key), self.db_conn.exists(self._format_key(key))))
         return self.db_conn.exists(self._format_key(key))
 
-    def set_value(self, key, value, expiretime=None):
+    def set_value(self, key, value, expiretime=86400):
         key = self._format_key(key)
 
         #XXX: beaker.container.Value.set_value calls NamespaceManager.set_value
