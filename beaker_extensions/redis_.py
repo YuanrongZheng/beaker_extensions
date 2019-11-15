@@ -45,6 +45,7 @@ class RedisManager(NoSqlManager):
         self.db_conn.delete(self._format_key(key))
 
     def _format_key(self, key):
+        key = key.decode('utf-8')
         return 'beaker:%s:%s' % (self.namespace, key.replace(' ', '\302\267'))
 
     def do_remove(self):
