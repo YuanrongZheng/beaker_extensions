@@ -51,7 +51,7 @@ class NoSqlManager(NamespaceManager):
         return self.namespace + '_' 
 
     def __getitem__(self, key):
-        return pickle.loads(self.db_conn.get(self._format_key(key)))
+        return pickle.loads(self.db_conn.get(self._format_key(key)), encoding='latin1')
 
     def __contains__(self, key):
         return self.db_conn.has_key(self._format_key(key))
