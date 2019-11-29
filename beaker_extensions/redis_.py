@@ -24,12 +24,11 @@ class RedisManager(NoSqlManager):
         log.debug('%s contained in redis cache (as %s) : %s'%(key, self._format_key(key), self.db_conn.exists(self._format_key(key))))
         return self.db_conn.exists(self._format_key(key))
 
-    def set_value(self, key, value, expiretime=86400):
+    def set_value(self, key, value, expiretime=259200):
         key = self._format_key(key)
 
         #XXX: beaker.container.Value.set_value calls NamespaceManager.set_value
         # however it(until version 1.6.3) never sets expiretime param. Why?
-
         if (expiretime is None) and (type(value) is tuple):
             try:
                 if isinstance(value[1], int) and value[1] > 0:
@@ -37,9 +36,9 @@ class RedisManager(NoSqlManager):
             except:
                 expiretime = 86400
         if expiretime:
-            self.db_conn.setex(key, expiretime, pickle.dumps(value))
+            self.db_conn.setex(key, expiretime, pickle.dumps(value,protocol=0))
         else:
-            self.db_conn.set(key, pickle.dumps(value))
+            self.db_conn.set(key, pickle.dumps(value,protocol=0))
 
     def __delitem__(self, key):
         self.db_conn.delete(self._format_key(key))
